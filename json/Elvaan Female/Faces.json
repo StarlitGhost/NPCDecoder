@@ -1,0 +1,110 @@
+[
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/9.DAT",
+        "ModelID": 0,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/10.DAT",
+        "ModelID": 1,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/11.DAT",
+        "ModelID": 2,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/12.DAT",
+        "ModelID": 3,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/13.DAT",
+        "ModelID": 4,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/14.DAT",
+        "ModelID": 5,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/15.DAT",
+        "ModelID": 6,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/16.DAT",
+        "ModelID": 7,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/17.DAT",
+        "ModelID": 8,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/18.DAT",
+        "ModelID": 9,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/19.DAT",
+        "ModelID": 10,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/20.DAT",
+        "ModelID": 11,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/21.DAT",
+        "ModelID": 12,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/22.DAT",
+        "ModelID": 13,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/23.DAT",
+        "ModelID": 14,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/42/24.DAT",
+        "ModelID": 15,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/200/91.DAT",
+        "ModelID": 26,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Female",
+        "Path": "ROM/143/22.DAT",
+        "ModelID": 30,
+        "Type": "Face"
+    }
+]

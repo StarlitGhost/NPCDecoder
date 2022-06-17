@@ -1,0 +1,110 @@
+[
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/63.DAT",
+        "ModelID": 0,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/64.DAT",
+        "ModelID": 1,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/65.DAT",
+        "ModelID": 2,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/66.DAT",
+        "ModelID": 3,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/67.DAT",
+        "ModelID": 4,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/68.DAT",
+        "ModelID": 5,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/69.DAT",
+        "ModelID": 6,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/70.DAT",
+        "ModelID": 7,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/71.DAT",
+        "ModelID": 8,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/72.DAT",
+        "ModelID": 9,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/73.DAT",
+        "ModelID": 10,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/74.DAT",
+        "ModelID": 11,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/75.DAT",
+        "ModelID": 12,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/76.DAT",
+        "ModelID": 13,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/77.DAT",
+        "ModelID": 14,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/32/78.DAT",
+        "ModelID": 15,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/204/86.DAT",
+        "ModelID": 27,
+        "Type": "Face"
+    },
+    {
+        "Race": "Hume Female",
+        "Path": "ROM/143/12.DAT",
+        "ModelID": 30,
+        "Type": "Face"
+    }
+]

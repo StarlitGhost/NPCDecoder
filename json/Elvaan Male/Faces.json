@@ -1,0 +1,110 @@
+[
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/36.DAT",
+        "ModelID": 0,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/37.DAT",
+        "ModelID": 1,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/38.DAT",
+        "ModelID": 2,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/39.DAT",
+        "ModelID": 3,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/40.DAT",
+        "ModelID": 4,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/41.DAT",
+        "ModelID": 5,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/42.DAT",
+        "ModelID": 6,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/43.DAT",
+        "ModelID": 7,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/44.DAT",
+        "ModelID": 8,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/45.DAT",
+        "ModelID": 9,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/46.DAT",
+        "ModelID": 10,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/47.DAT",
+        "ModelID": 11,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/48.DAT",
+        "ModelID": 12,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/49.DAT",
+        "ModelID": 13,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/50.DAT",
+        "ModelID": 14,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/37/51.DAT",
+        "ModelID": 15,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/196/16.DAT",
+        "ModelID": 26,
+        "Type": "Face"
+    },
+    {
+        "Race": "Elvaan Male",
+        "Path": "ROM/143/17.DAT",
+        "ModelID": 30,
+        "Type": "Face"
+    }
+]

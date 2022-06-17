@@ -1,0 +1,212 @@
+[
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/55.DAT",
+        "ModelID": 0,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/56.DAT",
+        "ModelID": 1,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/57.DAT",
+        "ModelID": 2,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/58.DAT",
+        "ModelID": 3,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/59.DAT",
+        "ModelID": 4,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/60.DAT",
+        "ModelID": 5,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/61.DAT",
+        "ModelID": 6,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/62.DAT",
+        "ModelID": 7,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/63.DAT",
+        "ModelID": 8,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/64.DAT",
+        "ModelID": 9,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/65.DAT",
+        "ModelID": 10,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/66.DAT",
+        "ModelID": 11,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/67.DAT",
+        "ModelID": 12,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/68.DAT",
+        "ModelID": 13,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/69.DAT",
+        "ModelID": 14,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/51/70.DAT",
+        "ModelID": 15,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Female",
+        "Path": "ROM/143/33.DAT",
+        "ModelID": 30,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/98.DAT",
+        "ModelID": 100,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/99.DAT",
+        "ModelID": 101,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/100.DAT",
+        "ModelID": 102,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/101.DAT",
+        "ModelID": 103,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/102.DAT",
+        "ModelID": 104,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/103.DAT",
+        "ModelID": 105,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/104.DAT",
+        "ModelID": 106,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/105.DAT",
+        "ModelID": 107,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/106.DAT",
+        "ModelID": 108,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/107.DAT",
+        "ModelID": 109,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/108.DAT",
+        "ModelID": 110,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/109.DAT",
+        "ModelID": 111,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/110.DAT",
+        "ModelID": 112,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/111.DAT",
+        "ModelID": 113,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/112.DAT",
+        "ModelID": 114,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/46/113.DAT",
+        "ModelID": 115,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/196/19.DAT",
+        "ModelID": 126,
+        "Type": "Face"
+    },
+    {
+        "Race": "Tarutaru Male",
+        "Path": "ROM/143/27.DAT",
+        "ModelID": 130,
+        "Type": "Face"
+    }
+]

@@ -1,0 +1,104 @@
+[
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/94.DAT",
+        "ModelID": 0,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/95.DAT",
+        "ModelID": 1,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/96.DAT",
+        "ModelID": 2,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/97.DAT",
+        "ModelID": 3,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/98.DAT",
+        "ModelID": 4,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/99.DAT",
+        "ModelID": 5,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/100.DAT",
+        "ModelID": 6,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/101.DAT",
+        "ModelID": 7,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/102.DAT",
+        "ModelID": 8,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/103.DAT",
+        "ModelID": 9,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/104.DAT",
+        "ModelID": 10,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/105.DAT",
+        "ModelID": 11,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/106.DAT",
+        "ModelID": 12,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/107.DAT",
+        "ModelID": 13,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/108.DAT",
+        "ModelID": 14,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/51/109.DAT",
+        "ModelID": 15,
+        "Type": "Face"
+    },
+    {
+        "Race": "Mithra",
+        "Path": "ROM/143/37.DAT",
+        "ModelID": 30,
+        "Type": "Face"
+    }
+]
