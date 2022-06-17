@@ -2,14 +2,12 @@ _addon.name = 'NPCDecoder'
 _addon.author = 'Ghosty'
 _addon.command = 'npcdecoder'
 _addon.commands = {'npcd'}
-_addon.version = '0.1'
+_addon.version = '0.2'
 
 require('luau')
-texts = require('texts')
 files = require('files')
 json = require('json2')
 packets = require('packets')
-chat = require('chat')
 bit = require('bit')
 res = require('resources')
 
@@ -30,7 +28,6 @@ res.races[34].dat = '1/169/11.DAT' -- Chocobo
 res.races[35].dat = '1/169/11.DAT' -- Chocobo
 res.races[36].dat = '1/169/11.DAT' -- Chocobo
 
-local root_json_dir = 'json/'
 res.races[1].json_dir = 'Hume Male'
 res.races[2].json_dir = 'Hume Female'
 res.races[3].json_dir = 'Elvaan Male'
@@ -39,19 +36,6 @@ res.races[5].json_dir = 'Tarutaru'
 res.races[6].json_dir = 'Tarutaru'
 res.races[7].json_dir = 'Mithra'
 res.races[8].json_dir = 'Galka'
-
-local ini_template =
-[[[%s]
-Race=%s
-Face=%s
-Head=%s
-Body=%s
-Hands=%s
-Legs=%s
-Feet=%s
-Main=%s
-Sub=%s
-Ranged=%s]]
 
 local npc_db = config.load('npc_db.xml')
 
@@ -67,47 +51,28 @@ function read_json(path)
     return t
 end
 
-function unpack_gear_id(gear_id)
-    local id = string.byte(gear_id:sub(1,1)) + bit.lshift(string.byte(gear_id:sub(2,2)), 8)
-    local id_masked = bit.band(id, 0x0FFF)
-    return id_masked
-end
-
 windower.register_event('load',function()
     for id, race in pairs(res.races) do
         if race.json_dir then
-            res.races[id].faces = read_json(root_json_dir..race.json_dir..'/Faces.json')
-            res.races[id].head = read_json(root_json_dir..race.json_dir..'/Heads.json')
-            res.races[id].body = read_json(root_json_dir..race.json_dir..'/Body.json')
-            res.races[id].hands = read_json(root_json_dir..race.json_dir..'/Hands.json')
-            res.races[id].legs = read_json(root_json_dir..race.json_dir..'/Legs.json')
-            res.races[id].feet = read_json(root_json_dir..race.json_dir..'/Feet.json')
-            res.races[id].main = read_json(root_json_dir..race.json_dir..'/Main.json')
-            res.races[id].sub = read_json(root_json_dir..race.json_dir..'/Sub.json')
-            --res.races[id].ranged = read_json(root_json_dir..race.json_dir..'/Ranged.json')
+            local race_json = 'json/'..race.json_dir
+            res.races[id].faces = read_json(race_json..'/Faces.json')
+            res.races[id].head = read_json(race_json..'/Heads.json')
+            res.races[id].body = read_json(race_json..'/Body.json')
+            res.races[id].hands = read_json(race_json..'/Hands.json')
+            res.races[id].legs = read_json(race_json..'/Legs.json')
+            res.races[id].feet = read_json(race_json..'/Feet.json')
+            res.races[id].main = read_json(race_json..'/Main.json')
+            res.races[id].sub = read_json(race_json..'/Sub.json')
+            --it seems like NPCs don't get ranged gear - todo: need to check if sub or ranged is the missing one
+            --res.races[id].ranged = read_json(race_json..'/Ranged.json')
         end
     end
 end)
 
-function ini_format(npc)
-    local ini = ini_template:format(npc.name..'-'..npc.id,
-    npc.dats.race or 'null',
-    npc.dats.face or ('null-'..npc.face_id),
-    npc.dats.head or 'null',
-    npc.dats.body or 'null',
-    npc.dats.hands or 'null',
-    npc.dats.legs or 'null',
-    npc.dats.feet or 'null',
-    npc.dats.main or 'null',
-    npc.dats.sub or 'null',
-    npc.dats.ranged or 'null')
-    return ini
-end
-
 windower.register_event('incoming chunk', function(id,data,modified,injected,blocked)
     -- write out the previous zone list when changing zones
     if id == 0x0B then
-        write_zone_npcs(_last_zone_id)
+        write_zone_ini(_last_zone_id)
         config.save(npc_db, 'npc_db.xml')
     end
 
@@ -117,11 +82,19 @@ windower.register_event('incoming chunk', function(id,data,modified,injected,blo
     process_npc_data(data)
 end)
 
+function unpack_gear_id(gear_id)
+    local id = string.byte(gear_id:sub(1,1)) + bit.lshift(string.byte(gear_id:sub(2,2)), 8)
+    local id_masked = bit.band(id, 0x0FFF)
+    return id_masked
+end
+
 function process_npc_data(data)
     local dir = 'incoming'
     local packet = packets.parse(dir, data)
     -- we only care about model information
     if not packet or packet.Model == 0 then return end
+    -- non-precomposed flag
+    -- todo: also handle precomposed NPCs
     if packet._unknown5 == 0 then return end
 
     local npc_obj = windower.ffxi.get_mob_by_id(packet.NPC)
@@ -159,8 +132,11 @@ function process_npc_data(data)
         },
     }
 
-    -- todo: log precomposed NPCs
-    if npc.race_id == 0 then return end
+    -- log precomposed NPCs that apparently have gear anyway?
+    if npc.race_id == 0 then
+        log("precomposed NPC with gear detected: "..npc.name..", gear hex: "..gear:hex())
+        return
+    end
 
     _last_zone_id = info.zone
 
@@ -170,8 +146,6 @@ function process_npc_data(data)
     if zone_table ~= nil then
         zone_name = zone_table.en
     end
-    local parsed_race = res.races[npc.race_id].en:gsub('♂', 'Male'):gsub('♀', 'Female')
-    local path = 'ini/'..zone_name..'/'..parsed_race..'/'..npc.name..'-'..npc.id..'.ini'
 
     npc.zone_id = zone_id
     npc.zone_name = zone_name
@@ -179,7 +153,6 @@ function process_npc_data(data)
     npc.dats.race = res.races[npc.race_id].dat
     if res.races[npc.race_id].faces and res.races[npc.race_id].faces[npc.face_id] then
         npc.dats.face = res.races[npc.race_id].faces[npc.race_id == 5 and (npc.face_id + 100) or npc.face_id].Path
-        npc.dats.face = string.gsub(npc.dats.face, '^ROM/', '1/')
     else
         npc.dats.face = nil
     end
@@ -190,7 +163,7 @@ function process_npc_data(data)
                 do break end
             end
             local gear_t = res.races[npc.race_id][slot][gear_id]
-            npc.dats[slot] = gear_t and string.gsub(gear_t.Path, '^ROM/', '1/') or 'null-'..gear_id
+            npc.dats[slot] = gear_t and gear_t.Path or 'null-'..gear_id
         until true
     end
 
@@ -200,17 +173,94 @@ function process_npc_data(data)
     if not npc_db[zone_id][packet.NPC] or npc_db[zone_id][packet.NPC].name ~= npc.name then
         npc_db[zone_id][packet.NPC] = npc
     end
-    if files.exists(path) then return end
 
-    local ini = ini_format(npc)
-
-    local f = files.new(path)
-    f:write(ini)
-
-    print('Name: '..npc.name, 'Race: '..res.races[npc.race_id].en, 'Index: '..packet.Index, 'NPC: '..packet.NPC)
+    write_npc(npc, ini_format)
+    write_npc(npc, noesis_format)
 end
 
-function write_zone_npcs(zone_id)
+function replace_gender_symbols(str)
+    return str:gsub('♂', 'Male'):gsub('♀', 'Female')
+end
+
+function npc_path(npc)
+    return npc.zone_name..'/'..replace_gender_symbols(res.races[npc.race_id].en)..'/'..npc.name..'-'..npc.id
+end
+
+function write_npc(npc, format_fn)
+    local formatted, root_dir, extension = format_fn(npc)
+    local path = root_dir..'/'..npc_path(npc)..'.'..extension
+    if files.exists(path) then return end
+
+    local f = files.new(path)
+    f:write(formatted)
+end
+
+function ini_format(npc)
+    local ini_template =
+[[[%s]
+Race=%s
+Face=%s
+Head=%s
+Body=%s
+Hands=%s
+Legs=%s
+Feet=%s
+Main=%s
+Sub=%s
+Ranged=%s]]
+
+    local function convert_path(dat_path)
+        if not dat_path then return nil end
+        return string.gsub(dat_path, '^ROM/', '1/')
+    end
+
+    local ini = ini_template:format(
+        npc.name..'-'..npc.id,
+        convert_path(npc.dats.race) or 'null',
+        convert_path(npc.dats.face) or ('null-'..npc.face_id),
+        convert_path(npc.dats.head) or 'null',
+        convert_path(npc.dats.body) or 'null',
+        convert_path(npc.dats.hands) or 'null',
+        convert_path(npc.dats.legs) or 'null',
+        convert_path(npc.dats.feet) or 'null',
+        convert_path(npc.dats.main) or 'null',
+        convert_path(npc.dats.sub) or 'null',
+        convert_path(npc.dats.ranged) or 'null')
+    return ini, 'ini', 'ini'
+end
+
+function noesis_format(npc)
+    local noesis_template =
+[[NOESIS_FF11_DAT_SET
+setPathKey "HKEY_LOCAL_MACHINE" "SOFTWARE\WOW6432Node\PlayOnlineEU\InstallFolder" "0001"
+
+dat "__skeleton" "%s"
+dat "__animation" "%s"
+dat "face" "%s"
+dat "head" "%s"
+dat "body" "%s"
+dat "hands" "%s"
+dat "legs" "%s"
+dat "feet" "%s"
+dat "weapon" "%s"
+dat "sub" "%s"]]
+
+    local noesis = noesis_template:format(
+        npc.dats.race,
+        npc.dats.race,
+        npc.dats.face,
+        npc.dats.head,
+        npc.dats.body,
+        npc.dats.hands,
+        npc.dats.legs,
+        npc.dats.feet,
+        npc.dats.main,
+        npc.dats.sub)
+
+    return noesis, 'noesis', 'ff11datset'
+end
+
+function write_zone_ini(zone_id)
     if not npc_db[zone_id] then return end
 
     local zone_table = res.zones[zone_id]
@@ -233,6 +283,6 @@ windower.register_event("addon command", function(command, ...)
     local args = L{ ... }
 
     if S{'write', 'w'}[command] then
-        write_zone_npcs(_last_zone_id)
+        write_zone_ini(_last_zone_id)
     end
 end)
