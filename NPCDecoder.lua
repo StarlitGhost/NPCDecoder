@@ -11,22 +11,22 @@ packets = require('packets')
 bit = require('bit')
 res = require('resources')
 
-res.races[1].dat = '1/27/82.DAT' -- Hume M
-res.races[2].dat = '1/32/58.DAT' -- Hume F
-res.races[3].dat = '1/37/31.DAT' -- Elvaan M
-res.races[4].dat = '1/42/4.DAT' -- Elvaan F
-res.races[5].dat = '1/46/93.DAT' -- Tarutaru M
-res.races[6].dat = '1/46/93.DAT' -- Tarutaru F
-res.races[7].dat = '1/51/89.DAT' -- Mithra
-res.races[8].dat = '1/56/59.DAT' -- Galka
-res.races[29].dat = '1/61/110.DAT' -- Mithra Child
-res.races[30].dat = '1/61/58.DAT' -- Hume/Elvaan Child F
-res.races[31].dat = '1/61/85.DAT' -- Hume/Elvaan Child M
-res.races[32].dat = '1/169/11.DAT' -- Chocobo
-res.races[33].dat = '1/169/11.DAT' -- Chocobo
-res.races[34].dat = '1/169/11.DAT' -- Chocobo
-res.races[35].dat = '1/169/11.DAT' -- Chocobo
-res.races[36].dat = '1/169/11.DAT' -- Chocobo
+res.races[1].dat = 'ROM/27/82.DAT' -- Hume M
+res.races[2].dat = 'ROM/32/58.DAT' -- Hume F
+res.races[3].dat = 'ROM/37/31.DAT' -- Elvaan M
+res.races[4].dat = 'ROM/42/4.DAT' -- Elvaan F
+res.races[5].dat = 'ROM/46/93.DAT' -- Tarutaru M
+res.races[6].dat = 'ROM/46/93.DAT' -- Tarutaru F
+res.races[7].dat = 'ROM/51/89.DAT' -- Mithra
+res.races[8].dat = 'ROM/56/59.DAT' -- Galka
+res.races[29].dat = 'ROM/61/110.DAT' -- Mithra Child
+res.races[30].dat = 'ROM/61/58.DAT' -- Hume/Elvaan Child F
+res.races[31].dat = 'ROM/61/85.DAT' -- Hume/Elvaan Child M
+res.races[32].dat = 'ROM/169/11.DAT' -- Chocobo
+res.races[33].dat = 'ROM/169/11.DAT' -- Chocobo
+res.races[34].dat = 'ROM/169/11.DAT' -- Chocobo
+res.races[35].dat = 'ROM/169/11.DAT' -- Chocobo
+res.races[36].dat = 'ROM/169/11.DAT' -- Chocobo
 
 res.races[1].json_dir = 'Hume Male'
 res.races[2].json_dir = 'Hume Female'
@@ -271,7 +271,8 @@ function write_zone_ini(zone_id)
 
     local ini = L{}
     for id, npc in pairs(npc_db[zone_id]) do
-        table.insert(ini, ini_format(npc))
+        local npc_ini, _, _ = ini_format(npc)
+        table.insert(ini, npc_ini)
     end
 
     local path = 'ini/'..zone_name..'/NPCs.ini'
@@ -284,5 +285,6 @@ windower.register_event("addon command", function(command, ...)
 
     if S{'write', 'w'}[command] then
         write_zone_ini(_last_zone_id)
+        config.save(npc_db, 'npc_db.xml')
     end
 end)
