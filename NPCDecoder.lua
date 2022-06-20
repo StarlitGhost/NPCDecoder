@@ -5,6 +5,7 @@ _addon.commands = {'npcd'}
 _addon.version = '0.2'
 
 require('luau')
+binser = require('binser')
 files = require('files')
 json = require('json2')
 packets = require('packets')
@@ -37,9 +38,9 @@ res.races[6].json_dir = 'Tarutaru'
 res.races[7].json_dir = 'Mithra'
 res.races[8].json_dir = 'Galka'
 
-local npc_db = config.load('npc_db.xml')
+local npc_db = {}
 
-local _last_zone_id = 0
+local _last_zone = 0
 
 function read_json(path)
     if not files.exists(path) then
@@ -67,13 +68,21 @@ windower.register_event('load',function()
             --res.races[id].ranged = read_json(race_json..'/Ranged.json')
         end
     end
+
+    local info = windower.ffxi.get_info()
+    if info.logged_in then
+        read_zone(info.zone)
+    end
 end)
 
 windower.register_event('incoming chunk', function(id,data,modified,injected,blocked)
     -- write out the previous zone list when changing zones
     if id == 0x0B then
-        write_zone_ini(_last_zone_id)
-        config.save(npc_db, 'npc_db.xml')
+        write_zone(_last_zone)
+    end
+    if id == 0x0A then
+        local info = windower.ffxi.get_info()
+        read_zone(info.zone)
     end
 
     -- we're only interested in NPC update packets
@@ -105,6 +114,8 @@ function process_npc_data(data)
     if not info.logged_in then return end
 
     local gear = data:sub(16*3 + 5, 16*3 + 5 + 14)
+
+    --if not #gear >= 14 then return end
 
     if not bit.band(string.byte(gear:sub(2, 2)), 0x10)
     or not bit.band(string.byte(gear:sub(4, 4)), 0x20)
@@ -138,14 +149,13 @@ function process_npc_data(data)
         return
     end
 
-    _last_zone_id = info.zone
-
     local zone_id = info.zone
     local zone_table = res.zones[zone_id]
     local zone_name = 'unknown'
     if zone_table ~= nil then
         zone_name = zone_table.en
     end
+    _last_zone = zone_name
 
     npc.zone_id = zone_id
     npc.zone_name = zone_name
@@ -167,11 +177,12 @@ function process_npc_data(data)
         until true
     end
 
-    if not npc_db[zone_id] then
-        npc_db[zone_id] = {}
+    if not npc_db[zone_name] then
+        npc_db[zone_name] = {}
     end
-    if not npc_db[zone_id][packet.NPC] or npc_db[zone_id][packet.NPC].name ~= npc.name then
-        npc_db[zone_id][packet.NPC] = npc
+    local npc_id = npc.name..'-'..packet.NPC
+    if not npc_db[zone_name][npc_id] or npc_db[zone_name][npc_id].name ~= npc.name then
+        npc_db[zone_name][npc_id] = npc
     end
 
     write_npc(npc, ini_format)
@@ -187,6 +198,8 @@ function npc_path(npc)
 end
 
 function write_npc(npc, format_fn)
+    if not npc.id then return end
+
     local formatted, root_dir, extension = format_fn(npc)
     local path = root_dir..'/'..npc_path(npc)..'.'..extension
     if files.exists(path) then return end
@@ -248,7 +261,7 @@ dat "sub" "%s"]]
     local noesis = noesis_template:format(
         npc.dats.race,
         npc.dats.race,
-        npc.dats.face,
+        npc.dats.face or ('null-'..npc.face_id),
         npc.dats.head,
         npc.dats.body,
         npc.dats.hands,
@@ -260,31 +273,55 @@ dat "sub" "%s"]]
     return noesis, 'noesis', 'ff11datset'
 end
 
-function write_zone_ini(zone_id)
-    if not npc_db[zone_id] then return end
+local function table_length(t)
+    local count = 0
+    for _ in pairs(t) do
+        count = count + 1
+    end
+    return count
+end
 
+function write_zone(zone_name)
+    if not npc_db[zone_name] then return end
+
+    local binser_path = 'binser/'..zone_name..'.binser'
+    local binser_f = files.new(binser_path)
+    local binser_data = binser.serialize(npc_db[zone_name])
+    binser_f:write(binser_data)
+
+    log("wrote %d NPCs for %s":format(table_length(npc_db[zone_name]), zone_name))
+
+    local ini = L{}
+    for id, npc in pairs(npc_db[zone_name]) do
+        local npc_ini, _, _ = ini_format(npc)
+        table.insert(ini, npc_ini)
+    end
+
+    local ini_path = 'ini/'..zone_name..'/NPCs.ini'
+    local ini_f = files.new(ini_path)
+    ini_f:write(table.concat(ini, '\n\n'))
+end
+
+function read_zone(zone_id)
     local zone_table = res.zones[zone_id]
     local zone_name = 'unknown'
     if zone_table ~= nil then
         zone_name = zone_table.en
     end
 
-    local ini = L{}
-    for id, npc in pairs(npc_db[zone_id]) do
-        local npc_ini, _, _ = ini_format(npc)
-        table.insert(ini, npc_ini)
+    local binser_path = 'binser/'..zone_name..'.binser'
+    if files.exists(binser_path) then
+        local binser_data = files.read(binser_path)
+        local num_npcs = 0
+        npc_db[zone_name], _ = binser.deserialize(binser_data)
+        log("read %d NPCs for %s":format(table_length(npc_db[zone_name]), zone_name))
     end
-
-    local path = 'ini/'..zone_name..'/NPCs.ini'
-    local f = files.new(path)
-    f:write(table.concat(ini, '\n\n'))
 end
 
 windower.register_event("addon command", function(command, ...)
     local args = L{ ... }
 
     if S{'write', 'w'}[command] then
-        write_zone_ini(_last_zone_id)
-        config.save(npc_db, 'npc_db.xml')
+        write_zone(_last_zone)
     end
 end)
