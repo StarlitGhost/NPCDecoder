@@ -2,7 +2,7 @@ _addon.name = 'NPCDecoder'
 _addon.author = 'Ghosty'
 _addon.command = 'npcdecoder'
 _addon.commands = {'npcd'}
-_addon.version = '0.2'
+_addon.version = '0.3'
 
 require('luau')
 binser = require('binser')
@@ -11,6 +11,13 @@ json = require('json2')
 packets = require('packets')
 bit = require('bit')
 res = require('resources')
+
+local defaults = {
+    Enabled = true,
+    Players = false,
+}
+local settings = config.load(defaults)
+config.save(settings)
 
 res.races[1].dat = 'ROM/27/82.DAT' -- Hume M
 res.races[2].dat = 'ROM/32/58.DAT' -- Hume F
@@ -76,6 +83,8 @@ windower.register_event('load',function()
 end)
 
 windower.register_event('incoming chunk', function(id,data,modified,injected,blocked)
+    if not settings.Enabled then return end
+
     -- write out the previous zone list when changing zones
     if id == 0x0B then
         write_zone(_last_zone)
@@ -86,9 +95,13 @@ windower.register_event('incoming chunk', function(id,data,modified,injected,blo
     end
 
     -- we're only interested in NPC update packets
-    if id ~= 0x0E then return end
+    if not S{0x0E, 0x0D}[id] then return end
 
-    process_npc_data(data)
+    if id == 0x0E then
+        process_npc_data(data)
+    elseif id == 0x0D and settings.Players then
+        process_pc_data(data)
+    end
 end)
 
 function unpack_gear_id(gear_id)
@@ -189,6 +202,59 @@ function process_npc_data(data)
     write_npc(npc, noesis_format)
 end
 
+function process_pc_data(data)
+    local dir = 'incoming'
+    local packet = packets.parse(dir, data)
+    -- we only care about model information
+    if not packet or packet.Head == 0 then return end
+
+    local pc_obj = windower.ffxi.get_mob_by_id(packet.Player)
+    if not pc_obj then return end
+    if S{'', '???'}[pc_obj.name:trim()] then return end
+
+    local info = windower.ffxi.get_info()
+    if not info.logged_in then return end
+
+    local pc = {
+        name = pc_obj.name,
+        id = packet.Player,
+        index = packet.Index,
+        race_id = packet.Race,
+        face_id = packet.Face,
+        gear_ids = {
+            head = bit.band(packet.Head, 0x0FFF),
+            body = bit.band(packet.Body, 0x0FFF),
+            hands = bit.band(packet.Hands, 0x0FFF),
+            legs = bit.band(packet.Legs, 0x0FFF),
+            feet = bit.band(packet.Feet, 0x0FFF),
+            main = bit.band(packet.Main, 0x0FFF),
+            sub = bit.band(packet.Sub, 0x0FFF),
+            ranged = bit.band(packet.Ranged, 0x0FFF),
+        },
+    }
+
+    pc.dats = {}
+    pc.dats.race = res.races[pc.race_id].dat
+    if res.races[pc.race_id].faces and res.races[pc.race_id].faces[pc.face_id] then
+        pc.dats.face = res.races[pc.race_id].faces[pc.race_id == 5 and (pc.face_id + 100) or pc.face_id].Path
+    else
+        pc.dats.face = nil
+    end
+    for slot, gear_id in pairs(pc.gear_ids) do
+        repeat
+            if not res.races[pc.race_id][slot] then
+                pc.dats[slot] = 'null-'..gear_id
+                do break end
+            end
+            local gear_t = res.races[pc.race_id][slot][gear_id]
+            pc.dats[slot] = gear_t and gear_t.Path or 'null-'..gear_id
+        until true
+    end
+
+    write_pc(pc, ini_format)
+    write_pc(pc, noesis_format)
+end
+
 function replace_gender_symbols(str)
     return str:gsub('♂', 'Male'):gsub('♀', 'Female')
 end
@@ -197,11 +263,26 @@ function npc_path(npc)
     return npc.zone_name..'/'..replace_gender_symbols(res.races[npc.race_id].en)..'/'..npc.name..'-'..npc.id
 end
 
+function pc_path(pc)
+    return 'Players/'..replace_gender_symbols(res.races[pc.race_id].en)..'/'..pc.name..'-'..pc.id
+end
+
 function write_npc(npc, format_fn)
     if not npc.id then return end
 
     local formatted, root_dir, extension = format_fn(npc)
     local path = root_dir..'/'..npc_path(npc)..'.'..extension
+    if files.exists(path) then return end
+
+    local f = files.new(path)
+    f:write(formatted)
+end
+
+function write_pc(pc, format_fn)
+    if not pc.id then return end
+
+    local formatted, root_dir, extension = format_fn(pc)
+    local path = root_dir..'/'..pc_path(pc)..'.'..extension
     if files.exists(path) then return end
 
     local f = files.new(path)
@@ -323,5 +404,13 @@ windower.register_event("addon command", function(command, ...)
 
     if S{'write', 'w'}[command] then
         write_zone(_last_zone)
+    elseif S{'players', 'p'}[command] then
+        settings.Players = not settings.Players
+        log("player logging - "..(settings.Players and "on" or "off"))
+        config.save(settings)
+    elseif S{'toggle', 't'}[command] then
+        settings.Enabled = not settings.Enabled
+        log("all logging - "..(settings.Enabled and "on" or "off"))
+        config.save(settings)
     end
 end)

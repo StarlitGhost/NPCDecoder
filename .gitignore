@@ -1,6 +1,7 @@
 binser/
 ini/
 noesis/
+data/
 Heads.json
 Body.json
 Hands.json
